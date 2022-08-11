@@ -1,0 +1,6 @@
+---
+create_user: igor
+copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+sys_packages: [ 'curl', 'vim', 'git', 'screen', 'mc', 'lsof', 'aptitude', 'rsync' ]
+timezone: "Europe/Warsaw"
+ssh_port: 37431

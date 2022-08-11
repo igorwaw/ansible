@@ -1,0 +1,34 @@
+#################################################
+# DO Community Playbooks: Initial Server Setup
+#################################################
+---
+    - name: Add docker apt key
+      apt_key: 
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+
+    - name: Add docker apt repo
+      apt_repository: 
+        repo: 'deb https://download.docker.com/linux/debian stable' 
+        state: present
+        filename: docker
+        update_cache: yes
+
+    - name: Install docker packages
+      apt:
+        name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
+        state: present
+
+
+    - name: Add user to docker group
+      user:
+        name: "{{ create_user }}"
+        state: present
+        groups: docker
+        append: yes
+
+    - name: Start docker
+      service:
+        name: docker
+        state: started
+        enabled: true
