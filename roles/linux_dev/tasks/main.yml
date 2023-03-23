@@ -1,0 +1,19 @@
+#################################################
+# DO Community Playbooks: Initial Server Setup
+#################################################
+---
+
+- name: Add VS Code repo key
+  ansible.builtin.apt_key:
+    url: https://packages.microsoft.com/keys/microsoft.asc 
+    state: present
+
+- name: Add VS Code repository
+  ansible.builtin.apt_repository:
+    repo: deb https://packages.microsoft.com/repos/code stable main
+    state: present
+
+- name: Install dev packages
+  apt: name={{ dev_packages }} state=latest
+
+

@@ -42,6 +42,15 @@
 #        regexp: '^#?PermitRootLogin'
 #        line: 'PermitRootLogin prohibit-password'
 
+
+    - name: Change SSH port
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^#?Port'
+        line: 'Port 37431'
+      notify: "Restart sshd"
+
     - name: Update packages
       apt: update_cache=yes upgrade=yes autoremove=yes
 
@@ -63,5 +72,5 @@
 
     - name: Set timezone
       community.general.timezone:
-        name: Europe/Warsaw
+        name: Europe/London
 

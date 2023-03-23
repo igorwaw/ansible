@@ -1,0 +1,4 @@
+---
+- import_tasks: pre-tasks.yml
+- import_tasks: samba.yml
+- import_tasks: post-tasks.yml

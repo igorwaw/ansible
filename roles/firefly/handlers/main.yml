@@ -1,0 +1,15 @@
+# File: roles/samba/handlers/main.yml
+---
+- name: Restart Samba services
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items: "{{ samba_services }}"
+
+- name: Create filesystem for other share
+  filesystem:
+    fstype: ext4
+    dev: /dev/datavg/othervol
+    opts: "-m 0 -L other"
+
+

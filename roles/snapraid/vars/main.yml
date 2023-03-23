@@ -1,0 +1,21 @@
+snapraid_install: true
+snapraid_runner: true
+
+snapraid_data_disks:
+  - path: /data/seriale1
+    content: true
+  - path: /data/seriale2
+    content: true
+  - path: /data/filmy
+    content: true
+  - path: /data/video2
+    content: true
+
+
+snapraid_parity_disks:
+  - path: /data/parity1
+    name: parity1
+    content: true
+  - path: /data/parity2
+    name: parity2
+    content: false

@@ -1,5 +1,5 @@
 ---
-- hosts: thinkpad420
+- hosts: elsa
   user: igor
   become: true
 
@@ -7,6 +7,9 @@
     - vars/main.yml
 
   roles:
-    - common_linux
+    - linux_common
+    - linux_dev
+    - linux_desktop
+    - qemu_host
     - docker_host
-#    - home_assistant
+

@@ -1,5 +1,5 @@
 ---
-- hosts: firefly
+- hosts: ubuntu-test
   user: igor
   become: true
 
@@ -8,8 +8,5 @@
 
   roles:
     - linux_common
-    - docker_host
-    - firefly
-    - jellyfin
-    - snapraid
-
+    - linux_dev
+    - linux_desktop

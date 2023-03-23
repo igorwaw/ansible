@@ -1,0 +1,20 @@
+#################################################
+# DO Community Playbooks: Initial Server Setup
+#################################################
+---
+
+- name: Add Debian Multimedia repo key
+  apt: 
+    deb: https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb
+    state: present
+    allow_unauthenticated: true
+
+- name: Add Debian Multimedia repository
+  ansible.builtin.apt_repository:
+    repo: deb https://www.deb-multimedia.org bullseye main non-free
+    state: present
+
+- name: Install desktop packages
+  apt: name={{ desktop_packages }} state=latest
+
+

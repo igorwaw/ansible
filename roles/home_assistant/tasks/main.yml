@@ -2,33 +2,24 @@
 # DO Community Playbooks: Initial Server Setup
 #################################################
 ---
-    - name: Add docker apt key
-      apt_key: 
-        url: https://download.docker.com/linux/debian/gpg
-        state: present
 
-    - name: Add docker apt repo
-      apt_repository: 
-        repo: 'deb https://download.docker.com/linux/debian stable' 
-        state: present
-        filename: docker
-        update_cache: yes
+- name: Create a directory for Home Assistant config
+  file:
+    name: "/home/igor/homeass"
+    state: directory
+    owner: igor
+    group: igor
+    mode: 0770
 
-    - name: Install docker packages
-      apt:
-        name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
-        state: present
-
-
-    - name: Add user to docker group
-      user:
-        name: "{{ create_user }}"
-        state: present
-        groups: docker
-        append: yes
-
-    - name: Start docker
-      service:
-        name: docker
-        state: started
-        enabled: true
+- name: Create a Home Assistant container
+  community.docker.docker_container:
+    name: myhomeass
+    image: ghcr.io/home-assistant/home-assistant:stable
+    state: started
+    network_mode: host
+    privileged: yes
+    env:
+      TZ: "Europe/Warsaw"
+    restart_policy: unless-stopped
+    volumes:
+      - /home/igor/homeass:/config

@@ -1,0 +1,18 @@
+version: '3.5'
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1001
+      - PGID=1002
+      - TZ=Europe/London
+    network_mode: 'host'
+    volumes:
+      - /data/noshare/jellyfin/config:/config
+      - /data/noshare/jellyfin/cache:/cache
+      - /data/filmy:/media1:ro
+      - /data/video2:/media2:ro
+      - /data/seriale1:/media3:ro
+      - /data/seriale2:/media4:ro
+    restart: 'unless-stopped'

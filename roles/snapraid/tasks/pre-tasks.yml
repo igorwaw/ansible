@@ -1,0 +1,11 @@
+
+
+- name: Create mount points for parity disks
+  loop: "{{ snapraid_parity_disks }}"
+  ansible.posix.mount:
+    path: /data/{{ item.name }}
+    src: LABEL={{ item.name }}
+    fstype: ext4
+    state: mounted
+    opts: nodev,noexec,noatime,nofail,x-systemd.device-timeout=10
+
