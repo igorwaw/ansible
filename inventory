@@ -1,8 +1,3 @@
 [linux]
 elsa ansible_port=37431 ansible_host=192.168.1.112
-odroid ansible_port=37431 ansible_host=192.168.0.102 ansible_user=root
 firefly ansible_port=37431 ansible_host=192.168.1.90 ansible_user=igor
-docker1 ansible_port=22 ansible_host=192.168.1.101 ansible_user=debian
-porcupine ansible_port=37431 ansible_host=192.168.0.33
-thinkpad420 ansible_port=22 ansible_host=192.168.0.94
-ubuntu-test ansible_host=172.31.156.143
