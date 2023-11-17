@@ -24,9 +24,9 @@
     state: restarted
     enabled: true
 
-- name: Restart WSDD
+- name: Restart syncthing
   service:
-    name: wsdd
+    name: syncthing@igor
     state: restarted
     enabled: true
 

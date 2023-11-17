@@ -15,4 +15,4 @@ services:
       - /data/video2:/media2:ro
       - /data/seriale1:/media3:ro
       - /data/seriale2:/media4:ro
-    restart: 'unless-stopped'
+    restart: 'always'

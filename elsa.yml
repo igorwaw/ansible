@@ -10,6 +10,5 @@
     - linux_common
     - linux_dev
     - linux_desktop
-    - qemu_host
     - docker_host
 

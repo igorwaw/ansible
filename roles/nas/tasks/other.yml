@@ -23,14 +23,3 @@
     name: hd-idle
     state: restarted
     enabled: true
-
-- name: Restart WSDD
-  service:
-    name: wsdd
-    state: restarted
-    enabled: true
-
-- name: Generate backup script
-  template:
-    dest: /etc/cron.daily/rsync-backup.sh
-    src: rsync-backup.sh.j2

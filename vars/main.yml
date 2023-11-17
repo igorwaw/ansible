@@ -1,7 +1,7 @@
 ---
 create_user: igor
 copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
-sys_packages: [ 'curl', 'vim', 'git', 'screen', 'mc', 'lsof', 'aptitude', 'rsync', 'gpg' ]
+sys_packages: [ 'curl', 'vim', 'git', 'screen', 'mc', 'lsof', 'aptitude', 'rsync', 'gpg', 'tcpdump', 'prometheus-node-exporter' ]
 dev_packages: [ 'g++', 'build-essential', 'code', 'geany', 'jupyter' ]
 desktop_packages: [ 'keepassxc', 'mplayer', 'vlc', 'libreoffice-writer', 'libreoffice-calc' ]
 timezone: "Europe/London"

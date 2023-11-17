@@ -1,0 +1,33 @@
+---
+
+- name: Install prometheus packages
+  apt:
+    name: ['prometheus', 'prometheus-snmp-exporter', 'prometheus-alertmanager']
+    state: present
+
+- name: Chown directory for Grafana data
+  ansible.builtin.file:
+    path: /data/noshare/grafana
+    state: directory
+    owner: 472
+    recurse: true
+
+- name: copy Grafana docker-compose.yml
+  copy:
+    src: files/docker-compose-grafana.yml
+    dest: "/home/{{ create_user }}/compose/docker-compose-grafana.yml"
+    owner: "{{ create_user }}"
+
+
+- name: start containers
+  community.docker.docker_compose:
+    project_src: "/home/{{ create_user }}/compose/"
+    state: present
+    files:
+      - "docker-compose-grafana.yml"
+  register: result
+
+- name: print compose output
+  ansible.builtin.debug:
+    var: result
+    verbosity: 2
