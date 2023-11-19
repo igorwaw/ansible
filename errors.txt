@@ -1,9 +1,0 @@
-jinja[spacing]: Jinja2 spacing could be improved: {{ item.hour | default ('00') }} -> {{ item.hour | default('00') }} (warning)
-roles/snapraid/tasks/snapraid-runner.yml:18 Jinja2 template rewrite recommendation: `{{ item.hour | default('00') }}`.
-
-jinja[spacing]: Jinja2 spacing could be improved: {{ item.minute | default ('00') }} -> {{ item.minute | default('00') }} (warning)
-roles/snapraid/tasks/snapraid-runner.yml:18 Jinja2 template rewrite recommendation: `{{ item.minute | default('00') }}`.
-
-jinja[spacing]: Jinja2 spacing could be improved: {{ item.weekday | default ('*') }} -> {{ item.weekday | default('*') }} (warning)
-roles/snapraid/tasks/snapraid-runner.yml:18 Jinja2 template rewrite recommendation: `{{ item.weekday | default('*') }}`.
-
