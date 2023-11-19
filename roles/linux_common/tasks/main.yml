@@ -2,38 +2,42 @@
 # DO Community Playbooks: Initial Server Setup
 #################################################
 ---
-    - name: Install Prerequisites
-      apt: name=sudo update_cache=yes state=latest force_apt_get=yes
+- name: Install Prerequisites
+  ansible.builtin.apt:
+    name: sudo
+    update_cache: true
+    state: latest
+    force_apt_get: true
 
 # Sudo Group Setup
-    - name: Make sure we have a 'wheel' group
-      group:
-        name: wheel
-        state: present
+- name: Make sure we have a 'wheel' group
+  ansible.builtin.group:
+    name: wheel
+    state: present
 
-    - name: Allow 'wheel' group to have passwordless sudo
-      lineinfile:
-        path: /etc/sudoers
-        state: present
-        regexp: '^%wheel'
-        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
-        validate: '/usr/sbin/visudo -cf %s'
+- name: Allow 'wheel' group to have passwordless sudo
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: '/usr/sbin/visudo -cf %s'
 
 # User + Key Setup
-    - name: Create a new regular user with sudo privileges
-      user:
-        name: "{{ create_user }}"
-        state: present
-        groups: wheel
-        append: true
-        create_home: true
-        shell: /bin/bash
+- name: Create a new regular user with sudo privileges
+  ansible.builtin.user:
+    name: "{{ create_user }}"
+    state: present
+    groups: wheel
+    append: true
+    create_home: true
+    shell: /bin/bash
 
-    - name: Set authorized key for remote user
-      authorized_key:
-        user: "{{ create_user }}"
-        state: present
-        key: "{{ copy_local_key }}"
+- name: Set authorized key for remote user
+  ansible.posix.authorized_key:
+    user: "{{ create_user }}"
+    state: present
+    key: "{{ copy_local_key }}"
 
 #    - name: Disable password authentication for root
 #      lineinfile:
@@ -43,19 +47,24 @@
 #        line: 'PermitRootLogin prohibit-password'
 
 
-    - name: Change SSH port
-      lineinfile:
-        path: /etc/ssh/sshd_config
-        state: present
-        regexp: '^#?Port'
-        line: 'Port 37431'
-      notify: "Restart sshd"
+- name: Change SSH port
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^#?Port'
+    line: 'Port 37431'
+  notify: "Restart sshd"
 
-    - name: Update packages
-      apt: update_cache=yes upgrade=yes autoremove=yes
+- name: Update packages
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: true
+    autoremove: true
 
-    - name: Install required system packages
-      apt: name={{ sys_packages }} state=latest
+- name: Install required system packages
+  ansible.builtin.apt:
+    name: "{{ sys_packages }}"
+    state: latest
 
 # UFW Setup
 #    - name: UFW - Allow SSH connections
@@ -70,7 +79,6 @@
 #        direction: incoming
 
 
-    - name: Set timezone
-      community.general.timezone:
-        name: Europe/London
-
+- name: Set timezone
+  community.general.timezone:
+    name: Europe/London

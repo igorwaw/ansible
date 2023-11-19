@@ -1,32 +1,29 @@
 ---
 - name: Install packages
-  apt: 
-    #name: ['hd-idle', 'wsdd'] 
-    name: ['hd-idle'] 
-    state: present
+  ansible.builtin.apt:
+    name: ['hd-idle', 'wsdd']
+    state: latest
 
-- name: configure hd-idle
+- name: Configure hd-idle
   ansible.builtin.lineinfile:
     path: /etc/default/hd-idle
     line: HD_IDLE_OPTS="-i 300 -l /var/log/hd-idle.log"
     state: present
 
-- name: configure WSDD
+- name: Configure WSDD
   ansible.builtin.lineinfile:
     path: /etc/default/wsdd
     line: WSDD_PARAMS="-n {{ samba_netbios_name }} -w {{ samba_workgroup }}"
     state: present
 
-
 - name: Restart hd-idle
-  service:
+  ansible.builtin.service:
     name: hd-idle
     state: restarted
     enabled: true
 
 - name: Restart syncthing
-  service:
+  ansible.builtin.service:
     name: syncthing@igor
     state: restarted
     enabled: true
-

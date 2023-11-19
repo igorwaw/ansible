@@ -1,5 +1,6 @@
 ---
-- hosts: elsa
+- name: "Configures Elsa - a Linux desktop"
+  hosts: elsa
   user: igor
   become: true
 
@@ -11,4 +12,3 @@
     - linux_dev
     - linux_desktop
     - docker_host
-

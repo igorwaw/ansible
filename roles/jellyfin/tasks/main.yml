@@ -7,23 +7,24 @@
   ansible.builtin.file:
     path: "/home/{{ create_user }}/compose"
     state: directory
+    mode: '0700'
     owner: "{{ create_user }}"
 
 
-- name: copy docker-compose.yml
-  copy:
+- name: Copy docker-compose.yml
+  ansible.builtin.copy:
     src: files/docker-compose.yml
     dest: "/home/{{ create_user }}/compose/docker-compose.yml"
     owner: "{{ create_user }}"
+    mode: '0600'
 
-
-- name: start containers
+- name: Start containers
   community.docker.docker_compose:
     project_src: "/home/{{ create_user }}/compose/"
     state: present
   register: result
 
-- name: print compose output
+- name: Print compose output
   ansible.builtin.debug:
     var: result
     verbosity: 2

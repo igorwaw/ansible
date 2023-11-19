@@ -1,34 +1,35 @@
 ---
 
-- name: check whether snapraid is installed
-  shell: "dpkg-query -W '{{ snapraid_apt_package_name }}'"
-  ignore_errors: True
+- name: Check whether snapraid is installed
+  ansible.builtin.command: "dpkg-query -W '{{ snapraid_apt_package_name }}'"
+  ignore_errors: true
   register: is_installed
   changed_when: "is_installed.rc != 0"
 
-- name: install snapraid?
-  set_fact:
+- name: Install snapraid?
+  ansible.builtin.set_fact:
     install_snapraid: "{{ snapraid_force_install == true or is_installed.failed == true }}"
 
-- name: build snapraid | clone git repo
-  git:
-    repo: https://github.com/IronicBadger/docker-snapraid.git
+- name: Build snapraid | clone git repo
+  ansible.builtin.git:
+    repo: https://github.com/IronicBadger/docker-snapraid.git # noqa: latest
     dest: /tmp/snapraid
-    force: yes
+    force: true
   when: install_snapraid
 
-- name: build snapraid | make build script executable
-  file:
+- name: Build snapraid | make build script executable
+  ansible.builtin.file:
     path: /tmp/snapraid/build.sh
-    mode: 0775
+    mode: "0775"
   when: install_snapraid
 
-- name: build snapraid | build .deb package
-  shell: cd /tmp/snapraid && ./build.sh
+- name: Build snapraid | build .deb package
+  ansible.builtin.shell: cd /tmp/snapraid && ./build.sh
+  changed_when: true
   when: install_snapraid
 
-- name: build snapraid | install built .deb
-  apt:
+- name: Build snapraid | install built .deb
+  ansible.builtin.apt:
     deb: /tmp/snapraid/build/snapraid-from-source.deb
     state: present
   when: install_snapraid

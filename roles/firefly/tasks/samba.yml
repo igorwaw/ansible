@@ -1,23 +1,21 @@
 # File: roles/samba/tasks/main.yml
 ---
 
-
-
 - name: Install Samba packages
-  package:
+  ansible.builtin.apt:
     name: "{{ samba_packages }}"
-    state: present
+    state: latest
   tags: samba
 
 - name: Install Samba VFS extensions packages
-  package:
+  ansible.builtin.apt:
     name: "{{ samba_vfs_packages }}"
-    state: present
+    state: latest
   when: samba_vfs_packages is defined
   tags: samba
 
 - name: Register Samba version
-  shell: >
+  ansible.builtin.shell: >
     set -o nounset -o pipefail -o errexit &&
     smbd --version | sed 's/Version //'
   args:
@@ -32,14 +30,14 @@
 #   tags: samba
 
 - name: Install SELinux package
-  package:
+  ansible.builtin.apt:
     name: "{{ samba_selinux_packages }}"
-    state: present
+    state: latest
   when: ansible_selinux is defined and ansible_selinux.status == 'enabled'
   tags: samba
 
 - name: Make sure SELinux boolean settings are correct
-  seboolean:
+  ansible.posix.seboolean:
     name: "{{ item }}"
     state: true
     persistent: true
@@ -48,7 +46,7 @@
   tags: samba
 
 - name: Create Samba shares root directory
-  file:
+  ansible.builtin.file:
     state: directory
     path: "{{ samba_shares_root }}"
     owner: root
@@ -59,34 +57,19 @@
 
 - name: Create share directories
   with_items: "{{ samba_shares }}"
-  file:
+  ansible.builtin.file:
     state: directory
-    path: "{{ item.path|default([samba_shares_root,item.name]|join('/')) }}"
-    owner: "{{ item.owner|default('root') }}"
-    group: "{{ item.group|default('users') }}"
-    mode: "{{ item.directory_mode|default('0775') }}"
-    setype: "{{ item.setype|default('samba_share_t') }}"
-  tags: samba
-
-- name: Ensure webserver document root exists
-  file:
-    name: "{{ samba_www_documentroot }}"
-    state: directory
-  when: samba_create_varwww_symlinks|bool
-  tags: samba
-
-- name: Create link to shares in webserver document root
-  file:
-    state: link
-    path: "{{ samba_www_documentroot }}/{{ item.name }}"
-    src: "{{ item.path|default([samba_shares_root,item.name]|join('/')) }}"
-  with_items: "{{ samba_shares }}"
-  when: samba_create_varwww_symlinks|bool
+    path: "{{ item.path | default([samba_shares_root, item.name] | join('/')) }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('users') }}"
+    mode: "{{ item.directory_mode | default('0775') }}"
+    setype: "{{ item.setype | default('samba_share_t') }}"
   tags: samba
 
 - name: Samba configuration
-  template:
+  ansible.builtin.template:
     dest: "{{ samba_configuration }}"
+    mode: '0644'
     src: smb.conf.j2
     validate: 'testparm -s %s'
   notify:
@@ -94,9 +77,10 @@
   tags: samba
 
 - name: Install global include file
-  template:
+  ansible.builtin.template:
     src: "{{ samba_global_include }}"
     dest: "{{ samba_configuration_dir }}"
+    mode: '0644'
     validate: 'testparm -s %s'
   when: samba_global_include is defined
   notify:
@@ -104,9 +88,10 @@
   tags: samba
 
 - name: Install home include file
-  template:
+  ansible.builtin.template:
     src: "{{ samba_homes_include }}"
     dest: "{{ samba_configuration_dir }}"
+    mode: '0644'
     validate: 'testparm -s %s'
   when: samba_homes_include is defined
   notify:
@@ -114,9 +99,10 @@
   tags: samba
 
 - name: Install share specific include files
-  template:
+  ansible.builtin.template:
     src: "{{ item.include_file }}"
     dest: "{{ samba_configuration_dir }}"
+    mode: '0644'
     validate: 'testparm -s %s'
   when: item.include_file is defined
   notify:
@@ -125,8 +111,9 @@
   tags: samba
 
 - name: Create username map file if needed
-  template:
+  ansible.builtin.template:
     dest: "{{ samba_username_map_file }}"
+    mode: '0644'
     src: smbusers.j2
   notify:
     - Restart Samba services
@@ -134,7 +121,7 @@
   tags: samba
 
 - name: Start Samba service(s)
-  service:
+  ansible.builtin.service:
     name: "{{ item }}"
     state: started
     enabled: true
@@ -142,7 +129,7 @@
   tags: samba
 
 - name: Create Samba users if they don't exist yet
-  shell: >
+  ansible.builtin.shell: >
     set -o nounset -o pipefail -o errexit &&
     (pdbedit --user={{ item.name }} 2>&1 > /dev/null) \
     || (echo {{ item.password }}; echo {{ item.password }}) \

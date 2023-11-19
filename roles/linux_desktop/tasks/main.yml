@@ -4,7 +4,7 @@
 ---
 
 - name: Add Debian Multimedia repo key
-  apt: 
+  ansible.builtin.apt:
     deb: https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb
     state: present
     allow_unauthenticated: true
@@ -15,6 +15,7 @@
     state: present
 
 - name: Install desktop packages
-  apt: name={{ desktop_packages }} state=latest
-
-
+  ansible.builtin.apt:
+    name: "{{ desktop_packages }}"
+    state: latest
+  ignore_errors: true

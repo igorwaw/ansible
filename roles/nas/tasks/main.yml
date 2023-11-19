@@ -1,4 +1,0 @@
----
-- import_tasks: mountpoints.yml
-- import_tasks: samba.yml
-- import_tasks: other.yml

@@ -1,18 +1,18 @@
 ---
 - name: Install syncthing
-  apt: 
-    name: ['syncthing'] 
-    state: present
+  ansible.builtin.apt:
+    name: ['syncthing']
+    state: latest
 
 - name: Create directory for synthing
   ansible.builtin.file:
     path: /data/noshare/syncthing
     state: directory
     owner: igor
+    mode: '0700'
 
 - name: Restart syncthing
-  service:
+  ansible.builtin.service:
     name: syncthing@igor
     state: restarted
     enabled: true
-

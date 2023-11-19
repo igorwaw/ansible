@@ -1,5 +1,5 @@
 ---
-- import_tasks: pre-tasks.yml
-- import_tasks: samba.yml
-- import_tasks: post-tasks.yml
-- import_tasks: syncthing.yml
+- ansible.builtin.import_tasks: pre-tasks.yml  # noqa name[missing]
+- ansible.builtin.import_tasks: samba.yml  # noqa name[missing]
+- ansible.builtin.import_tasks: post-tasks.yml  # noqa name[missing]
+- ansible.builtin.import_tasks: syncthing.yml  # noqa name[missing]

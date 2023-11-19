@@ -2,33 +2,33 @@
 # DO Community Playbooks: Initial Server Setup
 #################################################
 ---
-    - name: Add docker apt key
-      apt_key: 
-        url: https://download.docker.com/linux/debian/gpg
-        state: present
+- name: Add docker apt key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
 
-    - name: Add docker apt repo
-      apt_repository: 
-        repo: 'deb https://download.docker.com/linux/debian   bullseye stable'
-        state: present
-        filename: docker
-        update_cache: yes
+- name: Add docker apt repo
+  ansible.builtin.apt_repository:
+    repo: 'deb https://download.docker.com/linux/debian   bullseye stable'
+    state: present
+    filename: docker
+    update_cache: true
 
-    - name: Install docker packages
-      apt:
-        name: ['docker-ce', 'docker-ce-cli', 'containerd.io', 'python3-docker', 'docker-compose', 'docker-compose-plugin']
-        state: present
+- name: Install docker packages
+  ansible.builtin.apt:
+    name: ['docker-ce', 'docker-ce-cli', 'containerd.io', 'python3-docker', 'docker-compose', 'docker-compose-plugin']
+    state: present
 
 
-    - name: Add user to docker group
-      user:
-        name: "{{ create_user }}"
-        state: present
-        groups: docker
-        append: yes
+- name: Add user to docker group
+  ansible.builtin.user:
+    name: "{{ create_user }}"
+    state: present
+    groups: docker
+    append: true
 
-    - name: Start docker
-      service:
-        name: docker
-        state: started
-        enabled: true
+- name: Start docker
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true

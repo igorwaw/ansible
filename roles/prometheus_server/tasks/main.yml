@@ -1,13 +1,14 @@
 ---
 
 - name: Install prometheus packages
-  apt:
+  ansible.builtin.apt:
     name: ['prometheus', 'prometheus-snmp-exporter', 'prometheus-alertmanager']
-    state: present
+    state: latest
 
 - name: Generate config for Prometheus
-  template:
+  ansible.builtin.template:
     dest: "/etc/prometheus/prometheus.yml"
+    mode: '0644'
     src: prometheus.yml.j2
   notify:
     - Restart Prometheus
@@ -17,16 +18,17 @@
     path: /data/noshare/grafana
     state: directory
     owner: 472
+    mode: '0755'
     recurse: true
 
-- name: copy Grafana docker-compose.yml
-  copy:
+- name: Copy Grafana docker-compose.yml
+  ansible.builtin.copy:
     src: files/docker-compose-grafana.yml
     dest: "/home/{{ create_user }}/compose/docker-compose-grafana.yml"
     owner: "{{ create_user }}"
+    mode: '0600'
 
-
-- name: start containers
+- name: Start containers
   community.docker.docker_compose:
     project_src: "/home/{{ create_user }}/compose/"
     state: present
@@ -34,7 +36,7 @@
       - "docker-compose-grafana.yml"
   register: result
 
-- name: print compose output
+- name: Print compose output
   ansible.builtin.debug:
     var: result
     verbosity: 2

@@ -7,6 +7,8 @@ services:
       - TZ=Europe/London
     ports:
       - '3000:3000'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: 'always'
     volumes:
       - /data/noshare/grafana:/var/lib/grafana

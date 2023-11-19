@@ -1,5 +1,6 @@
 ---
-- hosts: firefly
+- name: "Configures Firefly - a home NAS/universal server"
+  hosts: firefly
   user: igor
   become: true
 
@@ -13,5 +14,3 @@
     - jellyfin
     - snapraid
     - prometheus_server
-
-
