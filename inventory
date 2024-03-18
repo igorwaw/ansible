@@ -1,3 +1,4 @@
 [linux]
 elsa ansible_port=37431 ansible_host=192.168.40.199
 firefly ansible_port=37431 ansible_host=192.168.40.52 ansible_user=igor
+mikrus ansible_port=10382 ansible_host=srv16.mikr.us ansible_user=root

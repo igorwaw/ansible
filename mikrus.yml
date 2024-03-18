@@ -1,0 +1,20 @@
+#################################################
+# DO Community Playbooks: Initial Server Setup
+#################################################
+---
+- name: Configure mikr.us VPS
+  hosts: mikrus
+  remote_user: root
+
+  tasks:
+  - name: Update packages
+    ansible.builtin.apt:
+      update_cache: true
+      upgrade: true
+      autoremove: true
+
+  - name: Install required system packages
+    ansible.builtin.apt:
+      update_cache: false
+      name:  [ 'curl', 'vim', 'git', 'screen', 'mc', 'lsof', 'aptitude', 'rsync', 'gpg', 'nginx-light' ]
+      state: latest
