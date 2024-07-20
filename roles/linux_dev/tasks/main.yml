@@ -16,4 +16,4 @@
 - name: Install dev packages
   ansible.builtin.apt:
     name: "{{ dev_packages }}"
-    state: latest
+    state: present

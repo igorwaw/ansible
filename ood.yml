@@ -1,0 +1,15 @@
+---
+- name: "Configures Ood - a Linux laptop"
+  hosts: ood
+  user: igor
+  become: true
+
+  vars_files:
+    - vars/main.yml
+
+  roles:
+    - linux_common
+    - linux_dev
+    - linux_desktop
+    - linux_photo
+    #- docker_host

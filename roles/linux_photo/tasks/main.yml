@@ -1,0 +1,10 @@
+#################################################
+# DO Community Playbooks: Initial Server Setup
+#################################################
+---
+
+- name: Install photo and video packages
+  ansible.builtin.apt:
+    name: "{{ photo_packages }}"
+    state: present
+  ignore_errors: true

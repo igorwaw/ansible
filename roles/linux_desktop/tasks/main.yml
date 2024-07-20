@@ -11,7 +11,7 @@
 
 - name: Add Debian Multimedia repository
   ansible.builtin.apt_repository:
-    repo: deb https://www.deb-multimedia.org bullseye main non-free
+    repo: deb https://www.deb-multimedia.org stable main non-free
     state: present
 
 - name: Install desktop packages

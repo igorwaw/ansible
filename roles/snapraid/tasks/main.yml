@@ -7,7 +7,7 @@
   ansible.builtin.include_tasks: install-debian.yml
   when: ansible_os_family == 'Debian' and snapraid_install
 
-- name: Xonfigure snapraid
+- name: Configure snapraid
   ansible.builtin.include_tasks: configure.yml
 
 - name: Install and configure snapraid-runner
