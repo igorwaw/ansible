@@ -34,7 +34,7 @@ chown_shares: false
 
 samba_users:
   - name: river
-    password: "{{ vault.samba_user_password }}""
+    password: "{{ vault.samba_user_password }}"
 
 samba_shares:
   - name: other
@@ -42,14 +42,9 @@ samba_shares:
     comment: 'Inne pliki'
     group: river
     write_list: +river
-  - name: seriale1
+  - name: seriale
     browsable: true
-    comment: 'Seriale rozne'
-    group: river
-    write_list: +river
-  - name: seriale2
-    browsable: true
-    comment: 'Seriale sf-f'
+    comment: 'Seriale'
     group: river
     write_list: +river
   - name: filmy
@@ -59,7 +54,7 @@ samba_shares:
     write_list: +river
   - name: video2
     browsable: true
-    comment: 'Bajki, cykle, inne video'
+    comment: 'Bajki, wlasne video, inne video'
     group: river
     write_list: +river
 

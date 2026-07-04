@@ -1,11 +1,11 @@
-- name: Create a system user for samba
-  loop: "{{ samba_users }}"
-  ansible.builtin.user:
-    name: "{{ item.name }}"
-    state: present
-    create_home: false
-    shell: /bin/true
-    password: '!'
+#- name: Create a system user for samba
+#  loop: "{{ samba_users }}"
+#  ansible.builtin.user:
+#    name: "{{ item.name }}"
+#    state: present
+#    create_home: false
+#    shell: /bin/true
+#    password: '!'
 
 - name: Create mount points for share directories
   loop: "{{ samba_shares }}"
