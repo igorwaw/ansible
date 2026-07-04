@@ -4,7 +4,7 @@ copy_local_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}
 sys_packages: [ 'curl', 'vim', 'git', 'screen', 'mc', 'lsof', 'aptitude', 'rsync', 'gpg', 'tcpdump', 'prometheus-node-exporter' ]
 dev_packages: [ 'g++', 'build-essential', 'code', 'geany', 'jq', 'git', 'pelican', 'hugo' ]
 desktop_packages: [ 'keepassxc', 'mplayer', 'vlc', 'libreoffice-writer', 'libreoffice-calc' ]
-photo_packages: [ 'darktable', 'rapid-photo-downloader', 'hugin', 'kdenlinve', 'yt-dlp', 'obs-studio', 'avidemux', 'mencoder', 'shotcut', 'mediainfo', 'geeqie', 'gimp', 'imagemagick', 'dia', 'inkscape' ]
+photo_packages: [ 'darktable', 'rapid-photo-downloader', 'hugin', 'kdenlive', 'yt-dlp', 'obs-studio', 'avidemux', 'mencoder', 'shotcut', 'mediainfo', 'geeqie', 'gimp', 'imagemagick', 'dia', 'inkscape' ]
 maker_packages: [ 'librecad', 'cura' ]
 secops_gui_packages: [ 'torbrowser-launcher', 'wireshark' ]
 secops_nogui_packages: [ 'nmap', 'clonezilla', 'arping', 'heartbleeder' ]

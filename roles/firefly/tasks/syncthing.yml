@@ -4,7 +4,7 @@
     name: ['syncthing']
     state: latest
 
-- name: Create directory for synthing
+- name: Create directory for syncthing
   ansible.builtin.file:
     path: /data/noshare/syncthing
     state: directory
