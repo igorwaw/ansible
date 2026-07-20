@@ -1,0 +1,23 @@
+---
+- name: Install minikube prerequisites
+  ansible.builtin.apt:
+    name: conntrack
+    state: present
+
+- name: Get latest stable kubectl version
+  ansible.builtin.uri:
+    url: https://dl.k8s.io/release/stable.txt
+    return_content: true
+  register: kubectl_stable_version
+
+- name: Install kubectl
+  ansible.builtin.get_url:
+    url: "https://dl.k8s.io/release/{{ kubectl_stable_version.content | trim }}/bin/linux/{{ minikube_arch }}/kubectl"
+    dest: /usr/local/bin/kubectl
+    mode: '0755'
+
+- name: Install minikube
+  ansible.builtin.get_url:
+    url: "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-{{ minikube_arch }}"
+    dest: /usr/local/bin/minikube
+    mode: '0755'

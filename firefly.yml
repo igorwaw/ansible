@@ -15,6 +15,7 @@
     - linux_common
     - firefly
     - docker_host
+    - minikube
     - jellyfin
     - snapraid
     - prometheus_server
