@@ -1,0 +1,10 @@
+---
+borg_backup_paths:
+  - /etc
+borg_backup_excludes: []
+borg_schedule_time: "02:00"
+borg_apt_version_pin: "1.*"
+borg_ssh_key_path: /root/.ssh/borg_ed25519
+borg_passphrase_file: /etc/borg/borg-passphrase
+borg_backup_script: /usr/local/sbin/borg-backup.sh
+borg_client_user: "borg-{{ inventory_hostname }}"

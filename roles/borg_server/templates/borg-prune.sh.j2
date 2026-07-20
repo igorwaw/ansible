@@ -1,0 +1,24 @@
+#!/bin/bash
+set -uo pipefail
+
+# A client backing up to itself over ssh:// (firefly) has its repo accessed
+# via two different location strings by the same root user on the same host
+# (ssh:// for the client backup, a local path here) - Borg's relocation
+# safety check would otherwise prompt interactively for that, which a
+# systemd service can't answer. Safe to bypass: both access paths are ours.
+export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
+
+status=0
+{% for client in borg_clients %}
+echo "== pruning {{ client }} =="
+export BORG_REPO="{{ borg_repo_root }}/{{ client }}"
+export BORG_PASSCOMMAND="cat ${CREDENTIALS_DIRECTORY}/passphrase_{{ client }}"
+borg prune --keep-daily {{ borg_keep_daily }} --keep-weekly {{ borg_keep_weekly }} --keep-monthly {{ borg_keep_monthly }} --stats || status=1
+borg compact || status=1
+# This script runs as root; prune/compact can create or rewrite segment
+# files, which then end up root-owned instead of owned by this client's
+# dedicated user - breaking that user's own SSH-restricted borg serve
+# access afterward. Restore correct ownership every run.
+chown -R "borg-{{ client }}:borg-{{ client }}" {{ borg_repo_root }}/{{ client }}
+{% endfor %}
+exit "$status"

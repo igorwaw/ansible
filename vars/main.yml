@@ -11,3 +11,13 @@ secops_nogui_packages: [ 'nmap', 'clonezilla', 'arping', 'heartbleeder' ]
 timezone: "Europe/Stockholm"
 ssh_port: 37431
 data_mount_timeout: 15
+
+borg_server_host: firefly
+borg_repo_root: /data/noshare/borg
+borg_clients:
+  - ood
+  - firefly
+borg_keep_daily: 7
+borg_keep_weekly: 4
+borg_keep_monthly: 6
+borg_prune_schedule_time: "03:00"

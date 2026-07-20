@@ -1,0 +1,17 @@
+---
+- name: Pin borgbackup package to the 1.x series
+  ansible.builtin.copy:
+    dest: /etc/apt/preferences.d/borgbackup
+    content: |
+      Package: borgbackup
+      Pin: version {{ borg_apt_version_pin }}
+      Pin-Priority: 990
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install borgbackup
+  ansible.builtin.apt:
+    name: borgbackup
+    state: latest
+    update_cache: true

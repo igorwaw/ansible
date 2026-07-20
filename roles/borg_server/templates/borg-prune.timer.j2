@@ -1,0 +1,10 @@
+[Unit]
+Description=Nightly Borg prune/compact timer
+
+[Timer]
+OnCalendar=*-*-* {{ borg_prune_schedule_time }}:00
+RandomizedDelaySec=600
+Persistent=true
+
+[Install]
+WantedBy=timers.target

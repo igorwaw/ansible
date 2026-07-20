@@ -1,0 +1,9 @@
+[Unit]
+Description=Borg prune/compact for all client repositories
+
+[Service]
+Type=oneshot
+{% for client in borg_clients %}
+LoadCredential=passphrase_{{ client }}:/etc/borg/prune-{{ client }}-passphrase
+{% endfor %}
+ExecStart={{ borg_prune_script }}

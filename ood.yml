@@ -6,6 +6,21 @@
 
   vars_files:
     - vars/main.yml
+    - vars/vault.yml
+
+  vars:
+    borg_backup_paths:
+      - /etc
+      - /home/igor
+    borg_backup_excludes:
+      - /home/igor/CloudStation
+      - /home/igor/.cache
+      - /home/igor/.local/share/torbrowser
+      - /home/igor/.local/share/Trash
+      - /home/igor/.local/share/claude
+      - /home/igor/.local/share/uv
+    borg_schedule_time: "02:30"
+    borg_passphrase: "{{ vault.vault_borg_passphrase_ood }}"
 
   roles:
     - linux_common
@@ -13,3 +28,4 @@
     - linux_desktop
     - linux_photo
     #- docker_host
+    - borg_client

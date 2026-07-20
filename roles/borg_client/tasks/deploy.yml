@@ -1,0 +1,48 @@
+---
+- name: Ensure the Borg config directory exists
+  ansible.builtin.file:
+    path: "{{ borg_passphrase_file | dirname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Deploy Borg passphrase credential file
+  ansible.builtin.copy:
+    dest: "{{ borg_passphrase_file }}"
+    content: "{{ borg_passphrase }}"
+    owner: root
+    group: root
+    mode: '0600'
+  no_log: true
+
+- name: Deploy Borg backup script
+  ansible.builtin.template:
+    src: borg-backup.sh.j2
+    dest: "{{ borg_backup_script }}"
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Deploy Borg backup systemd service
+  ansible.builtin.template:
+    src: borg-backup.service.j2
+    dest: /etc/systemd/system/borg-backup.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Deploy Borg backup systemd timer
+  ansible.builtin.template:
+    src: borg-backup.timer.j2
+    dest: /etc/systemd/system/borg-backup.timer
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable and start Borg backup timer
+  ansible.builtin.systemd_service:
+    name: borg-backup.timer
+    enabled: true
+    state: started
+    daemon_reload: true

@@ -1,0 +1,9 @@
+[Unit]
+Description=Borg backup of {{ inventory_hostname }} to {{ borg_server_host }}
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+LoadCredential=borg_passphrase:{{ borg_passphrase_file }}
+ExecStart={{ borg_backup_script }}

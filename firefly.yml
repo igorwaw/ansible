@@ -6,7 +6,7 @@
 
   vars_files:
     - vars/main.yml
-    # - vars/vault.yml  # unused while samba user creation is commented out in roles/firefly
+    - vars/vault.yml
 
   vars:
     docker_data_root: /data/noshare/docker
@@ -17,6 +17,7 @@
       - /data/filmy
       - /data/video2
       - /data/parity1
+    borg_passphrase: "{{ vault.vault_borg_passphrase_firefly }}"
 
   roles:
     - linux_common
@@ -27,3 +28,5 @@
     - jellyfin
     - snapraid
     - prometheus_server
+    - borg_client
+    - borg_server

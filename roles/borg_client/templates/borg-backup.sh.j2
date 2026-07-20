@@ -1,0 +1,30 @@
+#!/bin/bash
+set -uo pipefail
+
+export BORG_REPO="ssh://{{ borg_client_user }}@{{ borg_server_host }}:{{ ssh_port }}{{ borg_repo_root }}/{{ inventory_hostname }}"
+export BORG_RSH="ssh -i {{ borg_ssh_key_path }} -o StrictHostKeyChecking=accept-new -o ConnectTimeout=10 -o BatchMode=yes -p {{ ssh_port }}"
+export BORG_PASSCOMMAND="cat ${CREDENTIALS_DIRECTORY}/borg_passphrase"
+
+paths=(
+{% for path in borg_backup_paths %}
+  "{{ path }}"
+{% endfor %}
+)
+exclude_args=()
+{% for path in borg_backup_excludes %}
+exclude_args+=(--exclude "{{ path }}")
+{% endfor %}
+
+output=$(borg create --stats --compression zstd \
+  "::{hostname}-{now:%Y-%m-%d_%H:%M:%S}" \
+  "${paths[@]}" "${exclude_args[@]}" 2>&1)
+rc=$?
+echo "$output"
+
+if [ "$rc" -ne 0 ]; then
+  if echo "$output" | grep -qE 'Connection (timed out|refused)|Network is unreachable|Could not resolve hostname|Temporary failure in name resolution|Operation timed out'; then
+    echo "{{ borg_server_host }} unreachable, skipping backup"
+    exit 0
+  fi
+  exit "$rc"
+fi

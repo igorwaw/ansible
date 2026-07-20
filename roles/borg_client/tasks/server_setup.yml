@@ -1,0 +1,53 @@
+---
+- name: Ensure the Borg repository root exists on the server
+  ansible.builtin.file:
+    path: "{{ borg_repo_root }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  delegate_to: "{{ borg_server_host }}"
+
+- name: Check the Borg repository root's file attributes
+  ansible.builtin.stat:
+    path: "{{ borg_repo_root }}"
+  register: borg_repo_root_stat
+  delegate_to: "{{ borg_server_host }}"
+
+- name: Disable copy-on-write for the Borg repository root (avoids btrfs fragmentation)
+  ansible.builtin.command: "chattr +C {{ borg_repo_root }}"
+  when:
+    - borg_repo_root_stat.stat.exists
+    - "'nocow' not in (borg_repo_root_stat.stat.attributes | default([]))"
+  delegate_to: "{{ borg_server_host }}"
+
+- name: Create dedicated Borg user for this client on the server
+  ansible.builtin.user:
+    name: "{{ borg_client_user }}"
+    # Not /usr/sbin/nologin: sshd execs the authorized_keys command= restriction
+    # through the account's shell, so a non-executing shell would break borg
+    # serve too. The command=,restrict options below are the real boundary -
+    # they force borg serve and block forwarding/PTY regardless of shell.
+    shell: /bin/sh
+    home: "/home/{{ borg_client_user }}"
+    create_home: true
+    system: true
+  delegate_to: "{{ borg_server_host }}"
+
+- name: Ensure this client's repository directory exists on the server
+  ansible.builtin.file:
+    path: "{{ borg_repo_root }}/{{ inventory_hostname }}"
+    state: directory
+    owner: "{{ borg_client_user }}"
+    group: "{{ borg_client_user }}"
+    mode: '0700'
+  delegate_to: "{{ borg_server_host }}"
+
+- name: Install restricted SSH key for this client
+  ansible.posix.authorized_key:
+    user: "{{ borg_client_user }}"
+    path: "/home/{{ borg_client_user }}/.ssh/authorized_keys"
+    key: "{{ borg_ssh_keypair.public_key }}"
+    key_options: >-
+      command="borg serve --restrict-to-path {{ borg_repo_root }}/{{ inventory_hostname }} --append-only",restrict
+  delegate_to: "{{ borg_server_host }}"

@@ -1,0 +1,53 @@
+---
+# Assumes borg_client has already run on this host (installs borgbackup and
+# creates /data/noshare/borg) - firefly.yml lists borg_client before
+# borg_server for this reason.
+
+- name: Ensure the Borg config directory exists
+  ansible.builtin.file:
+    path: /etc/borg
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Deploy per-client Borg passphrase credential files
+  ansible.builtin.copy:
+    dest: "/etc/borg/prune-{{ item }}-passphrase"
+    content: "{{ vault['vault_borg_passphrase_' + item] }}"
+    owner: root
+    group: root
+    mode: '0600'
+  loop: "{{ borg_clients }}"
+  no_log: true
+
+- name: Deploy Borg prune/compact script
+  ansible.builtin.template:
+    src: borg-prune.sh.j2
+    dest: "{{ borg_prune_script }}"
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Deploy Borg prune systemd service
+  ansible.builtin.template:
+    src: borg-prune.service.j2
+    dest: /etc/systemd/system/borg-prune.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Deploy Borg prune systemd timer
+  ansible.builtin.template:
+    src: borg-prune.timer.j2
+    dest: /etc/systemd/system/borg-prune.timer
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable and start Borg prune timer
+  ansible.builtin.systemd_service:
+    name: borg-prune.timer
+    enabled: true
+    state: started
+    daemon_reload: true

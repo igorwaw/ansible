@@ -1,0 +1,2 @@
+---
+borg_prune_script: /usr/local/sbin/borg-prune.sh

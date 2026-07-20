@@ -1,0 +1,16 @@
+---
+- name: Check whether the Borg repository is already initialized
+  ansible.builtin.stat:
+    path: "{{ borg_repo_root }}/{{ inventory_hostname }}/config"
+  register: borg_repo_config
+  delegate_to: "{{ borg_server_host }}"
+
+- name: Initialize the Borg repository
+  ansible.builtin.command: >
+    borg init --encryption=repokey-blake2
+    ssh://{{ borg_client_user }}@{{ borg_server_host }}:{{ ssh_port }}{{ borg_repo_root }}/{{ inventory_hostname }}
+  environment:
+    BORG_PASSPHRASE: "{{ borg_passphrase }}"
+    BORG_RSH: "ssh -i {{ borg_ssh_key_path }} -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -o BatchMode=yes -p {{ ssh_port }}"
+  when: not borg_repo_config.stat.exists
+  no_log: true

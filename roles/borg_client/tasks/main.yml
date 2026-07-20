@@ -1,0 +1,15 @@
+---
+- name: Install and pin borgbackup
+  ansible.builtin.include_tasks: install.yml
+
+- name: Set up client SSH key
+  ansible.builtin.include_tasks: ssh_key.yml
+
+- name: Set up server-side account and repository
+  ansible.builtin.include_tasks: server_setup.yml
+
+- name: Initialize repository if needed
+  ansible.builtin.include_tasks: repo_init.yml
+
+- name: Deploy backup script and schedule
+  ansible.builtin.include_tasks: deploy.yml

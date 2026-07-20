@@ -1,0 +1,16 @@
+---
+- name: Ensure SSH directory exists
+  ansible.builtin.file:
+    path: "{{ borg_ssh_key_path | dirname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Generate dedicated Borg SSH keypair
+  community.crypto.openssh_keypair:
+    path: "{{ borg_ssh_key_path }}"
+    type: ed25519
+    comment: "{{ borg_client_user }}"
+    mode: '0600'
+  register: borg_ssh_keypair
