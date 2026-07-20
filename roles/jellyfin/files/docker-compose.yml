@@ -6,7 +6,7 @@ services:
     environment:
       - PUID=1001
       - PGID=1002
-      - TZ=Europe/London
+      - TZ=Europe/Stockholm
     network_mode: 'host'
     volumes:
       - /data/noshare/jellyfin/config:/config

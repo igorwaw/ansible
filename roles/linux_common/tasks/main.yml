@@ -81,4 +81,4 @@
 
 - name: Set timezone
   community.general.timezone:
-    name: Europe/London
+    name: "{{ timezone }}"

@@ -4,7 +4,7 @@ services:
     image: grafana/grafana-oss:latest
     container_name: grafana
     environment:
-      - TZ=Europe/London
+      - TZ=Europe/Stockholm
     ports:
       - '3000:3000'
     extra_hosts:
