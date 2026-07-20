@@ -1,0 +1,17 @@
+---
+- name: Check whether required data paths are mounted filesystems
+  ansible.builtin.command: "mountpoint -q {{ item }}"
+  loop: "{{ required_data_mounts }}"
+  register: data_mount_check
+  changed_when: false
+  failed_when: false
+
+- name: Fail if any required data path is not mounted
+  ansible.builtin.fail:
+    msg: >-
+      {{ item.item }} is not a mounted filesystem.
+      Unlock the encrypted /data volume on this host and mount it, then re-run this playbook.
+  loop: "{{ data_mount_check.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+  when: item.rc != 0

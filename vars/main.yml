@@ -8,5 +8,6 @@ photo_packages: [ 'darktable', 'rapid-photo-downloader', 'hugin', 'kdenlive', 'y
 maker_packages: [ 'librecad', 'cura' ]
 secops_gui_packages: [ 'torbrowser-launcher', 'wireshark' ]
 secops_nogui_packages: [ 'nmap', 'clonezilla', 'arping', 'heartbleeder' ]
-timezone: "Europe/London"
+timezone: "Europe/Stockholm"
 ssh_port: 37431
+data_mount_timeout: 15

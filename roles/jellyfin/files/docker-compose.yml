@@ -6,13 +6,12 @@ services:
     environment:
       - PUID=1001
       - PGID=1002
-      - TZ=Europe/London
+      - TZ=Europe/Stockholm
     network_mode: 'host'
     volumes:
       - /data/noshare/jellyfin/config:/config
       - /data/noshare/jellyfin/cache:/cache
       - /data/filmy:/media1:ro
       - /data/video2:/media2:ro
-      - /data/seriale1:/media3:ro
-      - /data/seriale2:/media4:ro
+      - /data/seriale:/media3:ro
     restart: 'always'

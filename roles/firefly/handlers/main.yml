@@ -5,9 +5,3 @@
     name: "{{ item }}"
     state: restarted
   with_items: "{{ samba_services }}"
-
-- name: Create filesystem for other share
-  community.general.filesystem:
-    fstype: ext4
-    dev: /dev/datavg/othervol
-    opts: "-m 0 -L other"

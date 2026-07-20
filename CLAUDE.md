@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Personal Ansible playbooks that configure Igor's own machines: two Linux desktops/laptops (`elsa`, `ood`), a home NAS/media server (`firefly`), and a mikr.us VPS (`mikrus`). There is no CI, no test suite, and no molecule setup — changes are validated with syntax checks and applied directly to real hosts defined in `inventory`.
 
+## Working conventions
+
+- Never run `ansible-playbook <playbook>.yml` (a real apply against a host) without the user reviewing the changes first. Syntax checks (`--syntax-check`), dry runs (`--check --diff`), and other read-only operations (`ansible-playbook facts.yml`, `ansible-doc`, etc.) are fine to run without asking.
+
 ## Commands
 
 ```bash

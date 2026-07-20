@@ -21,9 +21,3 @@
     name: hd-idle
     state: restarted
     enabled: true
-
-- name: Restart syncthing
-  ansible.builtin.service:
-    name: syncthing@igor
-    state: restarted
-    enabled: true
