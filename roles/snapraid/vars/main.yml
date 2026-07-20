@@ -1,5 +1,8 @@
 snapraid_install: true
-snapraid_runner: true
+# snapraid-runner always runs sync unconditionally as part of its pipeline (no
+# config flag to skip it) - use the plain cron.yml path instead so sync and
+# scrub can be scheduled independently, and sync can be dropped from cron.
+snapraid_runner: false
 
 snapraid_data_disks:
   - path: /data/seriale
