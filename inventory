@@ -1,6 +1,6 @@
 [linux]
 firefly ansible_port=37431 ansible_host=192.168.0.30 ansible_user=igor
-ood ansible_port=37431 ansible_host=192.168.1.106 ansible_user=igor
+ood ansible_port=37431 ansible_host=192.168.0.23 ansible_user=igor
 
 [vps]
 mikrus ansible_port=10382 ansible_host=monika382.mikrus.xyz ansible_user=root

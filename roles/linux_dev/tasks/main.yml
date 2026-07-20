@@ -10,7 +10,7 @@
     uris: https://packages.microsoft.com/repos/code
     suites: stable
     components: main
-    signed_by: https://packages.microsoft.com/keys/microsoft.asc
+    signed_by: /etc/apt/trusted.gpg.d/microsoft.asc
     state: present
     install_python_debian: true
 
