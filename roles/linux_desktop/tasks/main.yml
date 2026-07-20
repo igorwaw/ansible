@@ -9,9 +9,13 @@
     state: present
     allow_unauthenticated: true
 
-- name: Add Debian Multimedia repository
-  ansible.builtin.apt_repository:
-    repo: deb https://www.deb-multimedia.org stable main non-free
+- name: Add Debian Multimedia apt repository
+  ansible.builtin.deb822_repository:
+    name: deb-multimedia
+    types: deb
+    uris: https://www.deb-multimedia.org
+    suites: stable
+    components: [main, non-free]
     state: present
 
 - name: Install desktop packages

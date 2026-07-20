@@ -3,15 +3,16 @@
 #################################################
 ---
 
-- name: Add VS Code repo key
-  ansible.builtin.apt_key:
-    url: https://packages.microsoft.com/keys/microsoft.asc
+- name: Add VS Code apt repository
+  ansible.builtin.deb822_repository:
+    name: vscode
+    types: deb
+    uris: https://packages.microsoft.com/repos/code
+    suites: stable
+    components: main
+    signed_by: https://packages.microsoft.com/keys/microsoft.asc
     state: present
-
-- name: Add VS Code repository
-  ansible.builtin.apt_repository:
-    repo: deb https://packages.microsoft.com/repos/code stable main
-    state: present
+    install_python_debian: true
 
 - name: Install dev packages
   ansible.builtin.apt:
