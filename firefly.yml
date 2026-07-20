@@ -10,10 +10,18 @@
 
   vars:
     docker_data_root: /data/noshare/docker
+    required_data_mounts:
+      - /data/noshare
+      - /data/other
+      - /data/seriale
+      - /data/filmy
+      - /data/video2
+      - /data/parity1
 
   roles:
     - linux_common
     - firefly
+    - require_data_mounts
     - docker_host
     - minikube
     - jellyfin
