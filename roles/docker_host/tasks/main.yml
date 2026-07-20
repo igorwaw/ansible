@@ -83,8 +83,11 @@
     groups: docker
     append: true
 
-- name: Start docker
+- name: Start docker and configure boot-time auto-start
   ansible.builtin.service:
-    name: docker
+    name: "{{ item }}"
     state: started
-    enabled: true
+    enabled: "{{ docker_data_root == '/var/lib/docker' }}"
+  loop:
+    - docker.socket
+    - docker

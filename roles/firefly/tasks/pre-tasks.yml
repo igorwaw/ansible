@@ -7,29 +7,41 @@
 #    shell: /bin/true
 #    password: '!'
 
-- name: Create mount points for share directories
-  loop: "{{ samba_shares }}"
-  ansible.posix.mount:
-    path: /data/{{ item.name }}
-    src: LABEL={{ item.name }}
-    fstype: ext4
-    state: mounted
-    opts: nodev,noexec,noatime,nofail,x-systemd.device-timeout=10
+- name: Copy unlock/mount script
+  ansible.builtin.copy:
+    src: files/unlock-mount.sh
+    dest: /unlock-mount.sh
+    owner: root
+    group: root
+    mode: '0700'
 
-- name: Create mount points for non-share directories
-  loop: "{{ no_shares }}"
-  ansible.posix.mount:
-    path: /data/{{ item.name }}
-    src: LABEL={{ item.name }}
-    fstype: ext4
-    state: mounted
-    opts: nodev,noexec,noatime,nofail,x-systemd.device-timeout=10
+# - name: Create mount points for share directories
+#   loop: "{{ samba_shares }}"
+#   ansible.posix.mount:
+#     path: /data/{{ item.name }}
+#     src: LABEL={{ item.name }}
+#     fstype: ext4
+#     state: mounted
+#     opts: nodev,noexec,noatime,nofail,x-systemd.device-timeout=10
+#   async: "{{ data_mount_timeout }}"
+#   poll: 2
 
-- name: Chown mount points for share directories
-  loop: "{{ samba_shares }}"
-  ansible.builtin.file:
-    path: /data/{{ item.name }}
-    state: directory
-    owner: river
-    recurse: true
-  when: chown_shares
+# - name: Create mount points for non-share directories
+#   loop: "{{ no_shares }}"
+#   ansible.posix.mount:
+#     path: /data/{{ item.name }}
+#     src: LABEL={{ item.name }}
+#     fstype: ext4
+#     state: mounted
+#     opts: nodev,noexec,noatime,nofail,x-systemd.device-timeout=10
+#   async: "{{ data_mount_timeout }}"
+#   poll: 2
+
+# - name: Chown mount points for share directories
+#   loop: "{{ samba_shares }}"
+#   ansible.builtin.file:
+#     path: /data/{{ item.name }}
+#     state: directory
+#     owner: river
+#     recurse: true
+#   when: chown_shares

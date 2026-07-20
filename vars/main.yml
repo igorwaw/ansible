@@ -10,3 +10,4 @@ secops_gui_packages: [ 'torbrowser-launcher', 'wireshark' ]
 secops_nogui_packages: [ 'nmap', 'clonezilla', 'arping', 'heartbleeder' ]
 timezone: "Europe/London"
 ssh_port: 37431
+data_mount_timeout: 15

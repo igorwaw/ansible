@@ -6,3 +6,5 @@
     fstype: ext4
     state: mounted
     opts: nodev,noexec,noatime,nofail,x-systemd.device-timeout=10
+  async: "{{ data_mount_timeout }}"
+  poll: 2

@@ -6,7 +6,7 @@
 
   vars_files:
     - vars/main.yml
-    - vars/vault.yml
+    # - vars/vault.yml  # unused while samba user creation is commented out in roles/firefly
 
   vars:
     docker_data_root: /data/noshare/docker
@@ -20,8 +20,8 @@
 
   roles:
     - linux_common
-    - firefly
     - require_data_mounts
+    - firefly
     - docker_host
     - minikube
     - jellyfin

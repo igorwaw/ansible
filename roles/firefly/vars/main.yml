@@ -38,22 +38,22 @@ samba_users:
 
 samba_shares:
   - name: other
-    browsable: true
+    browseable: true
     comment: 'Inne pliki'
     group: river
     write_list: +river
   - name: seriale
-    browsable: true
+    browseable: true
     comment: 'Seriale'
     group: river
     write_list: +river
   - name: filmy
-    browsable: true
+    browseable: true
     comment: 'Filmy'
     group: river
     write_list: +river
   - name: video2
-    browsable: true
+    browseable: true
     comment: 'Bajki, wlasne video, inne video'
     group: river
     write_list: +river
